@@ -1,12 +1,12 @@
 package com.store.store.dto;
 
+
 import com.store.store.entity.Produto;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
-@Entity
+
 public class ProdutoDTO {
 
 		@Id
@@ -28,7 +28,6 @@ public class ProdutoDTO {
 		@Column(name = "valor")
 		private Integer valor;
 
-	
 
 		public ProdutoDTO(Long id, String nome, String categoria, String imagem, String descricao, Integer valor) {
 			this.id = id;
@@ -95,9 +94,6 @@ public class ProdutoDTO {
 		public void setValor(Integer valor) {
 			this.valor = valor;
 		}
-		
-		
-
 
 
 

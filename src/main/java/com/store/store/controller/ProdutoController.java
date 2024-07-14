@@ -6,9 +6,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,12 +34,9 @@ public class ProdutoController {
 		}
 		
 		@GetMapping("/{id}")
-		public ResponseEntity<Produto> buscar(@PathVariable Long id){
-			Optional<Produto> produtoOpt = produtoService.findById(id);
-			if (produtoOpt.isEmpty()) {
-				return ResponseEntity.notFound().build();
-			}
-			return ResponseEntity.ok(produtoOpt.get());
+		public ResponseEntity<ProdutoDTO> buscar(@PathVariable Long id){
+			
+			return ResponseEntity.ok(produtoService.buscar(id));
 		}
 		
 		
@@ -53,8 +52,19 @@ public class ProdutoController {
 			
 			return ResponseEntity.created(uri).body(produto);
 		}
-
 		
+		@PutMapping("/{id}")
+		public ResponseEntity<Produto> atualizar(@RequestBody Produto produto, @PathVariable Long id){
+			produto = produtoService.atualizar(produto, id);
+			
+			return ResponseEntity.ok().body(produto);
+		}
+
+		@DeleteMapping("/{id}")
+		public ResponseEntity<Void> remover(@PathVariable Long id){
+			produtoService.remover(id);
+			return ResponseEntity.noContent().build();
+		}
 	
 
 }

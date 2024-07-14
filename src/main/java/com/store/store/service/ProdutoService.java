@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.store.store.dto.ProdutoDTO;
 import com.store.store.entity.Produto;
+import com.store.store.exception.ProdutoException;
 import com.store.store.repository.ProdutoRepository;
 
 @Service
@@ -24,14 +25,42 @@ public class ProdutoService {
 		return produtosDTO;
 	}
 	
-	public Optional<Produto>findById(Long id){
-		return produtoRepository.findById(id);
+	public ProdutoDTO buscar(Long id){
+		Optional<Produto> produtoOpt = produtoRepository.findById(id);
+
+		if (produtoOpt == null) {
+			throw new ProdutoException("Produto não existe");
+		}
+		Produto produto = produtoOpt.get();
+		ProdutoDTO produtoDTO = new ProdutoDTO(produto);
+		return produtoDTO;
+		
 	}
 	
 	public Produto cadastrar(Produto produto) {
 		produto = produtoRepository.save(produto);
 		return produto;
 	}
+	
+	public Produto atualizar(Produto produto, Long id) {
+		Optional<Produto> produtoOpt = produtoRepository.findById(id);
 
+		if (produtoOpt == null) {
+			throw new ProdutoException("Produto não existe");
+		}
+		produto.setId(id);
+		produto = produtoRepository.save(produto);
+		return (produto);
+	}
+	
+
+	public Optional<Produto> remover(Long id) {
+		Optional<Produto> produtoOpt = produtoRepository.findById(id);
+		if (produtoOpt.isEmpty()) {
+			throw new ProdutoException("Produto não existe");
+		}
+		produtoRepository.deleteById(id);
+		return produtoRepository.findById(id);
+	}
 
 }

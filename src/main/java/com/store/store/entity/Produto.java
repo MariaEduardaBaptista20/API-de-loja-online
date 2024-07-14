@@ -1,5 +1,8 @@
 package com.store.store.entity;
 
+import java.util.Objects;
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +34,7 @@ public class Produto {
 	
 	@Column(name = "estoque")
 	private Long estoque;
+	
 	
 	public Produto() {}
 
@@ -100,7 +104,26 @@ public class Produto {
 	public void setValor(Integer valor) {
 		this.valor = valor;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(categoria, descricao, estoque, id, imagem, nome, valor);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		return Objects.equals(categoria, other.categoria) && Objects.equals(descricao, other.descricao)
+				&& Objects.equals(estoque, other.estoque) && Objects.equals(id, other.id)
+				&& Objects.equals(imagem, other.imagem) && Objects.equals(nome, other.nome)
+				&& Objects.equals(valor, other.valor);
+	}
 	
 
 
