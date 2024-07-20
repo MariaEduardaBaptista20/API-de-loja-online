@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.store.store.dto.ProdutoDTO;
@@ -12,6 +14,7 @@ import com.store.store.entity.Compra;
 import com.store.store.entity.Produto;
 import com.store.store.entity.Usuario;
 import com.store.store.exception.ProdutoException;
+import com.store.store.exception.UsuarioException;
 import com.store.store.repository.CompraRepository;
 import com.store.store.repository.ProdutoRepository;
 import com.store.store.repository.UsuarioRepository;
@@ -35,7 +38,7 @@ public class CompraService {
 	    	Optional<Usuario> usuarioOpt = usuarioRepository.findById(usuarioId);
 
 			if (usuarioOpt == null) {
-				throw new ProdutoException("Usuario não existe");
+				throw new UsuarioException("Usuario não existe");
 			}
 	    
 			  Usuario usuario = usuarioOpt.get();
@@ -73,7 +76,8 @@ public class CompraService {
 	      
 	    }
 	    
-	    public List<Compra> listarComprasPorUsuario(Long usuarioId) {
-	        return compraRepository.findByUsuarioId(usuarioId);
+	    public Page<Compra> listarComprasPorUsuario(Long usuarioId, Pageable pageable) {
+	    	Page<Compra> comprasDoUsuario = compraRepository.findByUsuarioId(usuarioId, pageable);
+	    	return comprasDoUsuario;
 	    }
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +31,8 @@ public class ProdutoController {
 		ProdutoService produtoService;
 		
 		@GetMapping
-		public ResponseEntity<List<ProdutoDTO>> listar(){
-			return ResponseEntity.ok(produtoService.findAll());
+		public ResponseEntity<Page<ProdutoDTO>> listar(Pageable pageable){
+			return ResponseEntity.ok(produtoService.listar(pageable));
 		}
 		
 		@GetMapping("/{id}")

@@ -9,7 +9,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
 
 	@ExceptionHandler(ProdutoException.class)
-	protected ResponseEntity<?> handleEmailException(ProdutoException ex){
+	protected ResponseEntity<?> handlerProdutoException(ProdutoException ex){
+		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
+	}
+	
+	@ExceptionHandler(UsuarioException.class)
+	protected ResponseEntity<?> handlerUsuarioException(UsuarioException ex){
 		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
 	}
 

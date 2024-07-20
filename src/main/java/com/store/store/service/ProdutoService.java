@@ -5,6 +5,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import com.store.store.dto.ProdutoDTO;
@@ -18,11 +22,11 @@ public class ProdutoService {
 	@Autowired
 	private ProdutoRepository produtoRepository;
 	
-	public List<ProdutoDTO> findAll(){
-		List<Produto>produtos = produtoRepository.findAll();
+	public Page<ProdutoDTO> listar(@PageableDefault(size= 10) Pageable pageable){
+		Page<Produto>produtos = produtoRepository.findAll(pageable);
 
-		List<ProdutoDTO> produtosDTO = produtos.stream().map(produto -> new ProdutoDTO(produto)).collect(Collectors.toList());
-		return produtosDTO;
+		
+		return produtos.map(ProdutoDTO::new);
 	}
 	
 	public ProdutoDTO buscar(Long id){
